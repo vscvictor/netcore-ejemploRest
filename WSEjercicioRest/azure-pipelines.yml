@@ -1,0 +1,44 @@
+trigger:
+- '*'
+
+variables:
+- name: buildConfiguration
+  value: 'Release'
+- name: isDevelopBranch
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
+- name: isReleaseBranch
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+- name: testWorkingDirectory
+  value: 'WSEjercicioRest.Test'
+- name: testProjectFilePath
+  value: 'WSEjercicioRest.Test/WSEjercicioRest.Test.csproj'
+- name: sonarProjectKey
+  value: 'arq-microservicio-netcore-60'
+- name: project
+  value: 'WSEjercicioRest.API'
+- name: repositoryImageName
+  value: 'BP-Arquetipos/_git/arq-microservicio-netcore-60'
+- name: openshiftImageStream
+  value: wsejerciciorest
+- name: openshiftNamespace
+  value: clientes
+- ${{ if or( startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/bugfix/')) }}:
+    - group: development
+- ${{ if or( eq(variables['Build.SourceBranch'], 'refs/heads/develop'),startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')) }}:
+    - group: staging
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    - group: production
+
+  
+resources:
+ repositories:
+   - repository: NetcoreTemplate
+     type: git
+     name: BP-DevOps-Infrastructure/common-pipeline-template-oc
+     ref: refs/heads/masterv2
+
+extends:
+  template: netcore/init.yml@NetcoreTemplate
+  parameters:
+    netCoreVersion: '6.0.201'
+    coverletVersion: '3.1.2'

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BP.Comun.Rest" Version="1.0.0" />
+		<PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.145" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WSEjercicioRest.Dominio\WSEjercicioRest.Dominio.csproj" />
+		<ProjectReference Include="..\WSEjercicioRest.Entidades\WSEjercicioRest.Entidades.csproj" />
+	</ItemGroup>
+
+</Project>
